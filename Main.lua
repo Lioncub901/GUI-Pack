@@ -257,13 +257,9 @@ end
 
 -- This function gets called once every frame
 function draw()
-    --container.size = vec2(300 + 200 * math.sin(time.elapsed), 50) 
     gameWorld:update(time.delta)
     gameWorld:draw()
 
-    --style.textStyle(TEXT_BOLD)
-    --style.font("Heiti SC")
-    text( "👍⇥⌫↵⎋↑↓→←␣⇧⌘c你好", 400, 400, 200, 300)
 end
 
 function touched(touch)
@@ -271,62 +267,3 @@ function touched(touch)
     gameWorld:touched(touch)
    
 end
-
-
---[=[
-container = gameWorld.canvas:child("content")
-container.size = vec2(100,28)
-container.sprite = asset.Square
-container.color = color(128)
---collapse = container:add(gui.dragAndDrop, true, false)
-
-collapse = container:add(gui.menuButton)
-
-
-fileList = 
-{
-{label = {"Hats"},
-children = {
-{label = {"Cap"}},
-{label = {"Beanie"},
-children = {
-label = {"Cuffless"}
-}
-},
-{label = {"Cap"}},
-{label =  {"Beanie"},
-children = {
-{label = {"Cuffless"}},
-{label =  {"Cuffed"}}
-}
-}
-},
-},
-{label = {"Tops"},
-children = {
-{label = {"Shirt"}},
-{label = {"Singlet"}},
-{label = {"Coat"}}
-},
-},
-{label = {"Pants"},
-children = {
-{label = {"Jeans"}},
-{label = {"Shorts"}},
-{label =  {"Underwear"},
-children = {
-{label = {"Boxers"}},
-{label =  {"Briefs"},
-children = {
-{label = {"Boxers"}}
-}
-},
-{label = {"Tunks"}}
-}
-}
-},
-},
-}
-
-collapse:addList(fileList)
-]=]
