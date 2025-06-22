@@ -46,6 +46,36 @@ function gui.collapse:addItem(item, num)
     return self.collapseList[num].entity
 end
 
+function gui.collapse:itemIsOpen(itemNum)
+    local firstDepth = self.collapseList[itemNum].depth
+    while itemNum > 0 do
+        local item = self.collapseList[itemNum]
+        if item.isClosed and item.depth < firstDepth then
+            return false
+        end
+        if item.depth == 1 then
+            return true
+        end
+        itemNum = itemNum - 1
+    end
+end
+
+function gui.collapse:getChildren(itemNum)
+    local children = {}
+    local firstDepth = self.collapseList[itemNum].depth
+    itemNum = itemNum + 1
+    
+    local item = self.collapseList[itemNum]
+    while item.depth > firstDepth or itemNum > #self.collapseList do
+        
+        table.insert(children, item)
+        
+        itemNum = itemNum + 1
+        item = self.collapseList[itemNum]
+    end
+    return children
+end
+
 function gui.collapse:insertInPosition(item, num)
     if not num or num > #self.collapseList then
         table.insert(self.collapseList, item)

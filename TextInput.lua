@@ -133,9 +133,8 @@ function gui.textInput:willDeselect()
         self.entity:dispatch("onDeselect", self.typingText, self.oldTypingText, class)
     end
     
-    if gui.textInput.selectedEntity and not gui.textInput.selectedEntity.valid then
-        gui.textInput.selectedEntity = nil
-    end
+    print(self.charPos)
+  
 end
 
 function gui.textInput:update()
@@ -149,6 +148,9 @@ function gui.textInput:update()
         self:handleKeyboard()
         self:willDeselect()
     else
+        if gui.textInput.selectedEntity and not gui.textInput.selectedEntity.valid then
+            gui.textInput.selectedEntity = nil
+        end
         self.cursor.active = false
     end
     

@@ -10,6 +10,7 @@
 		<string>menuButton</string>
 		<string>menuBar</string>
 		<string>TextInput</string>
+		<string>collapsibleSection</string>
 		<string>fitChildren</string>
 		<string>DragAndDrop</string>
 		<string>HoverChecking</string>
@@ -22,7 +23,6 @@
 		<string>Grid</string>
 		<string>Dragable</string>
 		<string>FakeChild</string>
-		<string>collapsibleSection</string>
 		<string>ColorPicker</string>
 		<string>TextField</string>
 		<string>Paragraph</string>
