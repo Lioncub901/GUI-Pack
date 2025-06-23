@@ -132,8 +132,6 @@ function gui.textInput:willDeselect()
         gui.textInput.selectedEntity = nil
         self.entity:dispatch("onDeselect", self.typingText, self.oldTypingText, class)
     end
-    
-    print(self.charPos)
   
 end
 
