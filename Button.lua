@@ -19,7 +19,7 @@ function gui.button:created(styles)
         selectedColor = color(186),
         hoverColor = color(234)
     }
-    
+        
     if styles then
         for styleName, styleValue in pairs(styles) do
             self.style[styleName] = styleValue
@@ -76,7 +76,12 @@ end
 
 function gui.button:checkHover()
     if mouse and mouse.active then
-        if gui.wasHovered(self.entity) then
+        local newMouse = nil
+        if self.scene.canvas.entity.newMouse then
+            newMouse = self.scene.canvas.entity.newMouse(mouse)
+        end
+        
+        if  self.entity == gui.insideTest(self.scene, newMouse or mouse, "hoverTest")  then
             if not self.hovered then
                 self.entity:dispatch("onMouseEnter", self)
             end

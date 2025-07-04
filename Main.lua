@@ -9,7 +9,7 @@ end
 -- Use this function to perform your initial setup
 function setup()
     viewer.mode = FULLSCREEN
-    gameWorld = scene.default2d()
+    gameWorld = scene.default2d("yo")
     --scene.main = gameWorld
     
     --Sim:
@@ -19,6 +19,8 @@ function setup()
     gameWorld.pixelsPerUnit = 64
     gameWorld.time.autoUpdate = false
     gameWorld.camera:get(camera).clearColor = color(40, 40, 50)
+    
+    print(gameWorld.id)
     
     --uxl.readFile(asset.documents.TestUxl)
     --style.font()

@@ -1,13 +1,13 @@
 gui.fakeChild = class("gui.fakeChild", component)
 
 function gui.fakeChild:created()
-    
+    --print("pdsfsdfsdf")
     self.entity.fakeChildren = {}
     
     self.entity.fakeChildAt = function(lol,num)
         return self.entity.fakeChildren[num]
     end
-    
+
     self.entity.fakeChild = function(lol, name, parent)
         if not parent then
             parent = self.entity.parent

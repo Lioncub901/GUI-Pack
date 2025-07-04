@@ -1,6 +1,7 @@
 gui.label = class('gui.label', component)
 
 function gui.label:created(shouldFit, fitAxis)
+    
     self.text = ""
     self.fontSize = 32
     self.color = color(255)

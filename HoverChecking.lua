@@ -20,18 +20,19 @@ function gui.wasTouched(enti, conditionFunction)
 end
 
 function gui.insideTest(scen, pos, property, conditionFunction)
+    local scenName = scen.name
     if typeof(property) == "string" then
-        if gui[property.."Time"] == nil then
-            gui[property.."Time"] = 0
-            gui[property.."Entity"] = nil
+        if gui[scenName..property.."Time"] == nil then
+            gui[scenName..property.."Time"] = 0
+            gui[scenName..property.."Entity"] = nil
         end
         
-        if time.elapsed ~= gui[property.."Time"] then
-            gui[property.."Time"] = time.elapsed
-            gui[property.."Entity"] = gui.insideHeavyTest(scen, pos, property, conditionFunction)
+        if time.elapsed ~= gui[scenName..property.."Time"] then
+            gui[scenName..property.."Time"] = time.elapsed
+            gui[scenName..property.."Entity"] = gui.insideHeavyTest(scen, pos, property, conditionFunction)
         end
         
-        return  gui[property.."Entity"]
+        return  gui[scenName..property.."Entity"]
     end
     return gui.insideHeavyTest(scen, pos, property, conditionFunction)
 end

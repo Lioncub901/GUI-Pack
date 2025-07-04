@@ -1,5 +1,5 @@
 function rectPickShader()
-    return shader.builder():unlit()
+    return shader.builder():sprite()
     :func(hsvToRgbString)
     :number{"hue"}
     :material[[
@@ -12,7 +12,7 @@ function rectPickShader()
 end
 
 function hueSliderShader()
-    return shader.builder():unlit()
+    return shader.builder():sprite()
     :func(hsvToRgbString)
     :material[[
     vec2 uv = getUV0();
@@ -24,7 +24,7 @@ function hueSliderShader()
 end
 
 function alphaSliderShader()
-    return shader.builder():unlit()
+    return shader.builder():sprite()
     :func(hsvToRgbString)
     :color{"mColor", value = color(255, 202, 0)}
     :material[[

@@ -7,8 +7,10 @@
 		<string>Main</string>
 		<string>uiLayout</string>
 		<string>Label</string>
+		<string>FakeChild</string>
 		<string>menuButton</string>
 		<string>menuBar</string>
+		<string>Button</string>
 		<string>TextInput</string>
 		<string>collapsibleSection</string>
 		<string>fitChildren</string>
@@ -16,13 +18,11 @@
 		<string>HoverChecking</string>
 		<string>DropDown</string>
 		<string>DragableList</string>
-		<string>Button</string>
 		<string>ScrollArea</string>
 		<string>hStack</string>
 		<string>vStack</string>
 		<string>Grid</string>
 		<string>Dragable</string>
-		<string>FakeChild</string>
 		<string>ColorPicker</string>
 		<string>TextField</string>
 		<string>Paragraph</string>
