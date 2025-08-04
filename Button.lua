@@ -2,7 +2,7 @@ if not gui then
     gui = {}
 end    
 
-gui.button = class('gui.button', component)
+gui.button = class('gui.button')
 
 function gui.button:created(styles)
     self.entity.hitTest = true
@@ -35,6 +35,45 @@ function gui.button:created(styles)
     self.selected = false
     self.disabled = false
     self.passCondition = nil
+
+    if not gui.button.scenes then
+        gui.button.scenes = {}
+        gui.button.oldSelected = {}
+    end
+    
+    gui.button.scenes[self.scene.name] = self.scene
+    
+    if not gui.button.didHandleHover then
+        mouse.addHandler("onHover", gui.button.handleHover)
+        gui.button.didHandleHover = true
+    end
+end
+
+function gui.button.handleHover()
+    for k, scen in pairs(gui.button.scenes) do
+        
+        local newMouse = nil
+        if scen.canvas.entity.newMouse then
+            newMouse = scen.canvas.entity.newMouse(mouse)
+        end
+        
+        local buttonEnti = gui.insideTest(scen, newMouse or mouse, "hoverTest")
+        
+        local oldSelected =gui.button.oldSelected[scen.name]
+        if oldSelected and oldSelected ~= buttonEnti and oldSelected.valid and oldSelected:has(gui.button) then
+            local butto = oldSelected:get(gui.button)
+            butto:checkHover(false)
+            butto:updateState()
+        end
+        
+        if buttonEnti and buttonEnti:has(gui.button) then
+            local butto = buttonEnti:get(gui.button)
+            butto:checkHover(true)
+            butto:updateState()
+        end
+        
+        gui.button.oldSelected[scen.name] = buttonEnti
+    end
 end
 
 function gui.button:start()
@@ -42,9 +81,9 @@ function gui.button:start()
 end
 
 function gui.button:update()
-    self:checkHover()
-    self:checkMultiply()
-    self:updateState()
+    --self:checkHover()
+    --self:checkMultiply()
+    --self:updateState()
 end
 
 function gui.button:checkMultiply()
@@ -63,6 +102,7 @@ function gui.button:didChangeColor()
 end
 
 function gui.button:updateState()
+    self:checkMultiply()
     if self.entity.sprite then
         local col = (self.disabled and self.style.disabledColor) or (self.selected and self.style.selectedColor) or (self.pressed and self.style.pressedColor) or  (self.hovered and self.style.hoverColor) or self.style.normalColor
         
@@ -74,14 +114,8 @@ function gui.button:updateState()
     end
 end
 
-function gui.button:checkHover()
-    if mouse and mouse.active then
-        local newMouse = nil
-        if self.scene.canvas.entity.newMouse then
-            newMouse = self.scene.canvas.entity.newMouse(mouse)
-        end
-        
-        if  self.entity == gui.insideTest(self.scene, newMouse or mouse, "hoverTest")  then
+function gui.button:checkHover(didPass)
+        if didPass then
             if not self.hovered then
                 self.entity:dispatch("onMouseEnter", self)
             end
@@ -93,10 +127,9 @@ function gui.button:checkHover()
             end
             self.hovered = false
         end
-    end
 end
 
-function gui.button:touched(touch, hit)
+--[=[function gui.button:touched(touch, hit)
     if not self.disabled then
         if touch.moving then
             return false
@@ -139,7 +172,7 @@ function gui.button:touched(touch, hit)
     end
         
     return true
-end
+end]=]
 
 function gui.selectButton(enti)
     for k, ent in ipairs(enti.parent.children) do
@@ -150,3 +183,5 @@ function gui.selectButton(enti)
     enti:get(gui.button).selected = true
     enti:get(gui.button):updateState()
 end
+
+Profiler.wrapClass(gui.button)

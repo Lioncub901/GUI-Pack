@@ -57,3 +57,4 @@ function gui.fitChildren:computeSize()
     self.entity.size = self.entity.size + 2 * self.padding
 end
 
+Profiler.wrapClass(gui.fitChild)

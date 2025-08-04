@@ -2,6 +2,11 @@ if not gui then
     gui = {}
 end 
 
+if Profiler == nil then
+    Profiler = {}
+    Profiler.wrapClass = function() end
+end
+
 function gui.entityToUiPos(enti, cam)
 
     local x, y = enti.scene.camera:get(camera):worldToScreen(enti.worldPosition.x , enti.worldPosition.y ,0)

@@ -127,3 +127,5 @@ function gui.grid:getElementPos(pos)
     local yPos = -(self.padding.top + ((row - 1) *  self.elementSize.y) + ((row - 1) * self.spacing) )
     return vec2(xPos, yPos)
 end
+
+Profiler.wrapClass(gui.grid)

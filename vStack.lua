@@ -40,7 +40,7 @@ function gui.vstack:update()
 end
 
 function gui.vstack:stretchItems()
-    if self.stretchChildren and (self.oldSize ~= self.entity.size.y or self.oldNum ~= #self.entity.children or self.activeCount ~= self:checkActiveCount()) then
+    if self.stretchChildren then
         local e = self.entity
         local sp = self.spacing
         
@@ -70,22 +70,8 @@ function gui.vstack:stretchItems()
                 else
                     child.size = vec2(e.size.x - self.padding.left - self.padding.right, child.size.y)
                 end
-                
-                --[[local stack = nil
-                if child:has(gui.vstack) then
-                    stack = child:get(gui.vstack)
-                elseif child:has(gui.hstack) then
-                    stack = child:get(gui.hstack)
-                end
-                if stack then
-                    stack:stretchItems()
-                end]]
             end
         end
-        
-        self.activeCount = self:checkActiveCount()
-        self.oldSize = self.entity.size.y
-        self.oldNum = #self.entity.children
     end
     
    
@@ -127,26 +113,54 @@ function gui.vstack:computeSize()
 end
 
 function gui.vstack:layout()
+    local e = self.entity
+    local padding = self.padding or { left = 0, right = 0, top = 0, bottom = 0 }
+    local left, right, top, bottom = padding.left, padding.right, padding.top, padding.bottom
+    local spacing = self.spacing or 0
+    local width = math.max(0, e.size.x - left - right)
+    local childCount = e.childCount
+    
+    -- Initialize cached values if not set
+    self.oldSize = self.oldSize or e.size.y
+    self.oldNum = self.oldNum or childCount
+    self.activeCount = self.activeCount or 0
+    
+    -- Check if layout needs updating
+    local shouldChange = (
+    self.oldSize ~= e.size.y or
+    self.oldNum ~= childCount or
+    self.activeCount ~= self:checkActiveCount() or
+    (childCount > 0 and e:childAt(1).active and not e:childAt(1).fakeParent and
+    (e:childAt(1).y ~= -top or e:childAt(1).size.x ~= width))
+    )
+    
+    if not shouldChange then
+        return self.cachedY or -bottom
+    end
+    
     self:stretchItems()
     
-    local e = self.entity
-    local sp = self.spacing
-    local y = -self.padding.top
-                    
-    for i = 1, e.childCount do
+    local y = -top
+    for i = 1, childCount do
         local child = e:childAt(i)
-        if child.active and child.fakeParent == nil then
-            child.x = (self.padding.left /2 ) + (-self.padding.right/2)
+        if child and child.active and not child.fakeParent then
+            child.x = (left - right) * 0.5
             child.y = y
             child.pivot = vec2(0.5, 1)
             child:anchor(STRETCH, TOP)
-                            
-            child.size = vec2(e.size.x - self.padding.left - self.padding.right, child.size.y)
-                            
-            y = y - child.size.y - ((i < e.childCount) and sp or 0)
-                            
+            child.size = vec2(width, child.size.y)
+            y = y - child.size.y - (i < childCount and spacing or 0)
         end
     end
-    y = y - self.padding.bottom
-
+    y = y - bottom
+    
+    -- Update cached state
+    self.oldSize = e.size.y
+    self.oldNum = childCount
+    self.activeCount = self:checkActiveCount()
+    self.cachedY = y
+    
+    return y
 end
+
+Profiler.wrapClass(gui.vstack)

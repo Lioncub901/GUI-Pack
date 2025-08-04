@@ -254,3 +254,5 @@ function gui.menuButton:defaultBaseStyle()
     end
 end
 --local extraImg = gui.imageUI(element, {size = vec2(element.size.y - 15), layout = {"Right", 10}}, asset.DropDownClose)
+
+Profiler.wrapClass(gui.menuButton)

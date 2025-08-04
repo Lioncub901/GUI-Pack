@@ -303,3 +303,5 @@ function gui.collapse:update()
         self.closeNum = nil
     end
 end
+
+Profiler.wrapClass(gui.collapse)

@@ -595,4 +595,7 @@ otherList = {
     
 for k, v in pairs(otherList) do
     typeCharactersList[k] = v
-end
+    end
+    
+Profiler.wrapClass(gui.textInput)
+    

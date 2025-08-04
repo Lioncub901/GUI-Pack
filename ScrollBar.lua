@@ -59,6 +59,6 @@ function gui.scrollBar:touched(touch)
 end
 
 
-
+Profiler.wrapClass(gui.scrollBar)
 
 

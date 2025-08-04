@@ -1,4 +1,4 @@
-gui.label = class('gui.label', component)
+gui.label = class('gui.label')
 
 function gui.label:created(shouldFit, fitAxis)
     
@@ -111,3 +111,5 @@ function gui.label:cutToFit(name)
     
     return self.truncatedString
 end
+
+Profiler.wrapClass(gui.label)

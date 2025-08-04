@@ -6,6 +6,10 @@ function gui.dragableList:created(padding, spacing)
     self.moveSpeed = 5
     self.childrenOrder = {}
     self.addedChildren = false
+    
+    if self.entity:has(gui.vstack) then
+        self.entity:remove(gui.vstack)
+    end
 end
 
 function gui.dragableList:start()
@@ -13,6 +17,7 @@ function gui.dragableList:start()
         local e = self.entity
         for i = 1, e.childCount do
             local child = e:childAt(i)
+            self:checkDrag(child)
             table.insert(self.childrenOrder, child)
             child.y = self:getYPos(i)
         end
@@ -49,15 +54,23 @@ function gui.dragableList:getYPos(pos)
     return y
 end
 
+function gui.dragableList:getOrderNum(childEnti)
+    for k, child in ipairs(self.childrenOrder) do
+        if child.id == childEnti.id then
+            return k
+        end
+    end
+end
+
 function gui.dragableList:layout()
     local e = self.entity
     local pd = self.padding
     
     for k, child in ipairs(self.childrenOrder) do
-        self:checkDrag(child)
         local drag = child:get(gui.dragable)
         if not drag.isDragging then
             --child.x = 0
+            
             self:moveTowardPosition(child, k)
             drag.bottom = nil
             drag.top = nil
@@ -89,6 +102,7 @@ function gui.dragableList:moveTowardPosition(enti, pos)
     end
     enti.y = enti.y + dis.y
     enti.x = enti.x + dis.x
+    --print(dis)
 end
 
 function gui.dragableList:checkNeighbors(pos)
@@ -117,6 +131,7 @@ function gui.dragableList:addChild(child)
         child:moveBefore(self.childrenOrder[#self.childrenOrder])
         child.y = self.childrenOrder[#self.childrenOrder].y
     end
+    self:checkDrag(child)
     table.insert(self.childrenOrder, child)
 end
 

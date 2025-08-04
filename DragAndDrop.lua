@@ -102,3 +102,5 @@ function gui.dragAndDrop.destroyDrop()
     gui.dragItems = nil
     gui.draggingOffset = nil
 end
+
+Profiler.wrapClass(gui.dragAndDrop)

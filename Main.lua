@@ -9,7 +9,7 @@ end
 -- Use this function to perform your initial setup
 function setup()
     viewer.mode = FULLSCREEN
-    gameWorld = scene.default2d("yo")
+    gameWorld = scene.default2d("gameWorld")
     --scene.main = gameWorld
     
     --Sim:
@@ -157,6 +157,7 @@ function setup()
     collapse = container:add(gui.collapse)
     --print(scr)
 
+    container:add(gui.dragableList)
     list = 
     {
         {depth = 1,content =  {"Hats"}},

@@ -82,3 +82,4 @@ function gui.dropDown.defaultButton(items, theClass)
     return buttonEntity
 end
 
+Profiler.wrapClass(gui.dropDown)

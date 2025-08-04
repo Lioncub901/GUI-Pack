@@ -28,7 +28,7 @@ function gui.scrollArea:created(axis)
     self.mouseScrollStrength = 0.2
 
     self.currentlyPanning = false
-    self.didHover = false
+    self.hovered = false
     self.pan = gesture.pan(function(ges)
         if ges.state == 1 then
             self.currentlyPanning = true
@@ -44,6 +44,42 @@ function gui.scrollArea:created(axis)
         end
     end, 2, 2, false)
     
+    
+    if not gui.scrollArea.scenes then
+        gui.scrollArea.scenes = {}
+        gui.scrollArea.oldSelected = {}
+    end
+    
+    gui.scrollArea.scenes[self.scene.name] = self.scene
+    
+    if not gui.scrollArea.didHandleHover then
+        mouse.addHandler("onHover", gui.scrollArea.handleHover)
+        gui.scrollArea.didHandleHover = true
+    end
+end
+
+function gui.scrollArea.handleHover()
+    for k, scen in pairs(gui.scrollArea.scenes) do
+        local newMouse = nil
+        if scen.canvas.entity.newMouse then
+            newMouse = scen.canvas.entity.newMouse(mouse)
+        end
+        
+        local scrollEnti =gui.insideTest(scen, mouse, "scrollTest") 
+        
+        local oldSelected = gui.scrollArea.oldSelected[scen.name]
+        if oldSelected and oldSelected ~= scrollEnti and oldSelected.valid and oldSelected:has(gui.scrollArea) then
+            oldSelected:get(gui.scrollArea).hovered = false
+            
+        end
+        
+        if scrollEnti and scrollEnti:has(gui.scrollArea) then
+            local scrol = scrollEnti:get(gui.scrollArea)
+            scrol.hovered = true
+        end
+        
+        gui.scrollArea.oldSelected[scen.name] = scrollEnti
+    end
 end
 
 function gui.scrollArea:start()
@@ -92,9 +128,8 @@ end
 
 function gui.scrollArea:update()
     
-
-    self.pan.enabled = mouse and mouse.active and self:hoveredScrollArea()
-    
+    --self.hovered = self:hoveredScrollArea()
+    self.pan.enabled = mouse and mouse.active and self.hovered     
     self.maxMovePos = vec2.max(self.content.size - self.entity.size, vec2(0))
     self:mouseScroll()
     
@@ -123,7 +158,7 @@ function gui.scrollArea:setBarState(state)
 end
 
 function gui.scrollArea:mouseScroll()
-    if mouse and mouse.active and not self.currentlyPanning and self:hoveredScrollArea() then
+    if mouse and mouse.active and not self.currentlyPanning and self.hovered then
         if self.axis & gui.horizontal == gui.horizontal then
             self.content.x = self.content.x + self.mouseScrollStrength * mouse.scroll.x
         end
@@ -341,3 +376,5 @@ function gui.scrollArea:calculateVelocity(touch)
         end
     end
 end
+
+Profiler.wrapClass(gui.scrollArea)

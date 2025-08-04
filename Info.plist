@@ -6,30 +6,29 @@
 	<array>
 		<string>Main</string>
 		<string>uiLayout</string>
+		<string>hStack</string>
+		<string>vStack</string>
 		<string>Label</string>
+		<string>DragableList</string>
+		<string>Dragable</string>
+		<string>Button</string>
 		<string>FakeChild</string>
 		<string>menuButton</string>
 		<string>menuBar</string>
-		<string>Button</string>
+		<string>ScrollArea</string>
 		<string>TextInput</string>
 		<string>collapsibleSection</string>
 		<string>fitChildren</string>
 		<string>DragAndDrop</string>
 		<string>HoverChecking</string>
 		<string>DropDown</string>
-		<string>DragableList</string>
-		<string>ScrollArea</string>
-		<string>hStack</string>
-		<string>vStack</string>
 		<string>Grid</string>
-		<string>Dragable</string>
 		<string>ColorPicker</string>
 		<string>TextField</string>
 		<string>Paragraph</string>
 		<string>ProgressBar</string>
 		<string>Slider</string>
 		<string>fitUI</string>
-		<string>GroupDropDown</string>
 		<string>ColorShaders</string>
 		<string>ScrollBar</string>
 		<string>toggle</string>

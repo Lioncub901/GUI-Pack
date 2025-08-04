@@ -91,3 +91,5 @@ function gui.fakeChildComponent:update()
         self.entity.active = false
     end
 end
+
+Profiler.wrapClass(gui.fakeChild)

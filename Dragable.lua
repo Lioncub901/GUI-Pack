@@ -39,7 +39,7 @@ function gui.dragable:layout()
 end
 
 function gui.dragable:checkMultiply()
-    if self.multiplyColor and (self.defaultColor == nil or self:didChangeColor()) then
+    if self.multiplyColor and (self.defaultColor == nil or self:didChangeColor()) and self.entity.sprite then
         self.defaultColor = self.entity.color
     end
 end
@@ -95,16 +95,16 @@ end
 function gui.dragable:touched(touch)
     if touch.began and self.conditionFunc() then
         self.passedCondition = true
-    elseif touch.ended or touch.cancelled then
-        self.passedCondition = false
     end
-        
+
     if self.canDrag and self.passedCondition then
         local scal = self.entity.scene.canvas.scale
+
         if touch.began  then
             self.beginPos = vec2(self.entity[self:X()],self.entity[self:Y()])
             self.beginTouchPos = touch.pos * scal
             self.isDragging = true
+
             self.entity:dispatch('onStartDrag', self) 
         elseif touch.ended or touch.cancelled then
             self.isDragging = false
@@ -118,6 +118,7 @@ function gui.dragable:touched(touch)
         end
         self.moving = true
         
+        
         local newPos = self.beginPos + (touch.pos * scal - self.beginTouchPos)
         if self.axis & gui.horizontal == gui.horizontal then
             self.entity[self:X()] = newPos.x 
@@ -127,7 +128,6 @@ function gui.dragable:touched(touch)
             self.entity[self:Y()] = newPos.y
         end
         self:clamp()
-        return true
     else
         if touch.began then
             self.isDragging = true 
@@ -137,8 +137,12 @@ function gui.dragable:touched(touch)
         if touch.moving and not self.isDragging then
             return false
         end
-        return true
     end
+    
+    if touch.ended or touch.cancelled then
+        self.passedCondition = false
+    end
+    return true
 end
 
 
@@ -200,7 +204,6 @@ function gui.selectDragable(enti)
     enti:get(gui.dragable).selected = true
     enti:get(gui.dragable):updateState()
 end
-
 
 --local xPos = select(2,child:anchorX()) - 0.5
 --adjustVec.x = xPos * self.entity.size.x 
