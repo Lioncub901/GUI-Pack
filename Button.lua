@@ -80,6 +80,16 @@ function gui.button:start()
     self:updateState()
 end
 
+function gui.button:select(value)
+    self.selected = value
+    self:updateState()
+end
+
+function gui.button:disable(value)
+    self.disabled = value
+    self:updateState()
+end
+
 function gui.button:update()
     --self:checkHover()
     --self:checkMultiply()
@@ -129,7 +139,7 @@ function gui.button:checkHover(didPass)
         end
 end
 
---[=[function gui.button:touched(touch, hit)
+function gui.button:touched(touch, hit)
     if not self.disabled then
         if touch.moving then
             return false
@@ -172,7 +182,7 @@ end
     end
         
     return true
-end]=]
+end
 
 function gui.selectButton(enti)
     for k, ent in ipairs(enti.parent.children) do

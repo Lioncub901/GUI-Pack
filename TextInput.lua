@@ -76,6 +76,7 @@ function gui.textInput:start()
     self.cursor.size = vec2(self.cursorSize:unpack())
     self.textObject:anchor(self.textAlign, MIDDLE)
     self:update()
+    self:layout()
 end
 
 function gui.textInput:getChar(num)

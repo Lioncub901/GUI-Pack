@@ -23,7 +23,7 @@ function gui.dragable:created(axis)
     self.defaultColor = nil
     
     self.checkColor = nil
-    self.multiplyColor = true
+    self.multiplyColor = false
     self.conditionFunc = function() return true end
 end
 
@@ -127,6 +127,8 @@ function gui.dragable:touched(touch)
         if self.axis & gui.vertical == gui.vertical then
             self.entity[self:Y()] = newPos.y
         end
+        
+        
         self:clamp()
     else
         if touch.began then

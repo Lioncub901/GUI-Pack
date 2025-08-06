@@ -49,7 +49,7 @@ end
 function gui.menuButton:update()
     if self.dropActive then
         self.entity:fakeChildAt(1).active = true
-        self.entity:get(gui.button).selected = true
+        self.entity:get(gui.button):select(true)
         if self:notSelected() then
             self.dropActive = false
         end
@@ -61,7 +61,7 @@ function gui.menuButton:update()
                 if element.fakeChildren then
                     element:fakeChildAt(1).active = false
                 end
-                butto.selected = false
+                butto:select(false)
             end
         end
     else
@@ -71,17 +71,17 @@ function gui.menuButton:update()
                 if currEnti == self.entity then
                     break
                 elseif currEnti.fakeParent == nil and currEnti:has(gui.button) then
-                    currEnti:get(gui.button).selected = false
+                    currEnti:get(gui.button):select(false)
                 end
             end
 
-            self.selectedElement:get(gui.button).selected = false
+            self.selectedElement:get(gui.button):select(false)
         end
         
         
         self.selectedElement = nil
         self.entity:fakeChildAt(1).active = false
-        self.entity:get(gui.button).selected = false
+        self.entity:get(gui.button):select(false)
     end
     
     
@@ -158,10 +158,10 @@ function gui.menuButton:selectElement(enti, waitOpen)
                 if currEnti.fakeParent then
                     currEnti.active = false
                 elseif currEnti:has(gui.button) then
-                    currEnti:get(gui.button).selected = false
+                    currEnti:get(gui.button):select(false)
                 end
             end
-            oldSelected:get(gui.button).selected = false
+            oldSelected:get(gui.button):select(false)
             if oldSelected.fakeChildren then
                 oldSelected:fakeChildAt(1).active = false
             end
@@ -171,12 +171,12 @@ function gui.menuButton:selectElement(enti, waitOpen)
         
         for k, currEnti in ipairs(parentList) do
             if currEnti.fakeParent == nil and currEnti:has(gui.button) then
-                currEnti:get(gui.button).selected = true
+                currEnti:get(gui.button):select(true)
             end
         end
         
 
-        self.selectedElement:get(gui.button).selected = true
+        self.selectedElement:get(gui.button):select(true)
         if not waitOpen or oldSelected == self.selectedElement or (oldSelected and self:isParentOf(self.selectedElement, oldSelected)) then
             if self.selectedElement.fakeChildren then
                 self.selectedElement:fakeChildAt(1).active = true

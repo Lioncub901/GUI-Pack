@@ -1,13 +1,18 @@
 gui.dragableList = class("gui.dragableList")
 
 function gui.dragableList:created(padding, spacing)
-    self.padding = padding or 10
+    self.padding = {left = 10, right = 10, top = 10, bottom = 10}
+    if padding then
+        self:setPadding(padding)
+    end
     self.spacing = spacing or 5
     self.moveSpeed = 5
     self.childrenOrder = {}
     self.addedChildren = false
     
     if self.entity:has(gui.vstack) then
+        self.padding = self.entity:get(gui.vstack).padding
+        self.spacing = self.entity:get(gui.vstack).spacing
         self.entity:remove(gui.vstack)
     end
 end
@@ -25,13 +30,31 @@ function gui.dragableList:start()
     end
 end
 
+function gui.dragableList:setPadding(padding)
+    if type(padding) == "number" or padding.x ~= nil then
+        if  type(padding) == "number" then
+            self.padding.left = padding
+            self.padding.right = padding
+            self.padding.top = padding
+            self.padding.bottom = padding
+        else
+            self.padding.left = padding.x
+            self.padding.right = padding.x
+            self.padding.top = padding.y
+            self.padding.bottom = padding.y
+        end
+    else
+        self.padding = padding
+    end
+end
+
 function gui.dragableList:computeSize()
     local e = self.entity
     local pd = self.padding
     local sp = self.spacing
     
     local size = e.size
-    size.y = pd
+    size.y = self.padding.top
     
     for i = 1, e.childCount do
         local child = e:childAt(i)
@@ -39,14 +62,14 @@ function gui.dragableList:computeSize()
             size.y = size.y + child.size.y + ((i < e.childCount) and sp or 0)
         end
     end
-    size.y = size.y + pd
+    size.y = size.y + self.padding.bottom
     
     e.size = size
 end
 
 function gui.dragableList:getYPos(pos)
     local e = self.entity
-    local y = -self.padding
+    local y = -self.padding.top
     for i = 1, pos - 1 do
         local child = self.childrenOrder[i]
         y = y - child.size.y - ((i < e.childCount) and self.spacing or 0)
@@ -65,11 +88,16 @@ end
 function gui.dragableList:layout()
     local e = self.entity
     local pd = self.padding
+    local left, right, top, bottom = pd.left, pd.right, pd.top, pd.bottom
+    local spacing = self.spacing or 0
+    local width = math.max(0, e.size.x - left - right)
     
     for k, child in ipairs(self.childrenOrder) do
         local drag = child:get(gui.dragable)
         if not drag.isDragging then
-            --child.x = 0
+            
+            child.x = (left - right) * 0.5
+            
             
             self:moveTowardPosition(child, k)
             drag.bottom = nil
@@ -82,23 +110,29 @@ function gui.dragableList:layout()
                 self:checkNeighbors(k)
             end
             drag.shouldFit = true
-            drag.bottom = -(self.entity.size.y - self.padding + 0.3)
-            drag.top = - (self.padding - 0.3)
+            drag.bottom = -(self.entity.size.y - self.padding.bottom + 0.3)
+            drag.top = - (self.padding.top - 0.3)
         end
         
         
         child.pivot = vec2(0.5, 1)
         child:anchor(STRETCH, TOP)
-        local s = child.size
-        child.size = vec2(e.size.x - pd * 2, s.y)
+        child.size = vec2(width, child.size.y)
+    end
+
+    if not self.first then
+        self.first = true
     end
 end
 
 function gui.dragableList:moveTowardPosition(enti, pos)
-    local dis = (vec2(0, self:getYPos(pos)) - vec2(enti.x, enti.y))
+    local dis = (vec2(enti.x, self:getYPos(pos)) - vec2(enti.x, enti.y))
     dir = dis.normalized --dis / math.abs(dis)
-    if dis.length > dir.length * self.moveSpeed then
-        dis = dir * self.moveSpeed
+    
+    local moveSpeed = (not self.first) and 9999999999 or self.moveSpeed
+    
+    if dis.length > dir.length * moveSpeed then
+        dis = dir * moveSpeed
     end
     enti.y = enti.y + dis.y
     enti.x = enti.x + dis.x

@@ -8,11 +8,11 @@
 		<string>uiLayout</string>
 		<string>hStack</string>
 		<string>vStack</string>
-		<string>Label</string>
+		<string>FakeChild</string>
 		<string>DragableList</string>
+		<string>Label</string>
 		<string>Dragable</string>
 		<string>Button</string>
-		<string>FakeChild</string>
 		<string>menuButton</string>
 		<string>menuBar</string>
 		<string>ScrollArea</string>

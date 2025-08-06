@@ -38,19 +38,10 @@ end
 function gui.fakeChild:layout()
     local parentWorldPos = vec2(self.entity.worldPosition.x, self.entity.worldPosition.y)
     for k, child in ipairs(self.entity.fakeChildren) do
-        if not child.valid then
-            table.remove(self.entity.fakeChildren, k)
-            if child.name then
-                self.entity[child.name] = nil
-            end
-            goto conti
-        end
-
         local worldPos = vec2(child.worldPosition.x, child.worldPosition.y)
         
         newWorldPosition = parentWorldPos + (self.entity.size / 2) + self:addAnchor(child) + self:addFakePosition(child)
         child.worldPosition = vec3(newWorldPosition.x, newWorldPosition.y, 0)
-        ::conti::
     end
 end
 
@@ -84,6 +75,20 @@ gui.fakeChildComponent = class("gui.fakeChildComponent", component)
 
 function gui.fakeChildComponent:created(fakeParent)
     self.fakeParent = fakeParent
+end
+
+function gui.fakeChildComponent:destroyed()
+    if self.fakeParent and self.fakeParent.valid and self.fakeParent.fakeChildren then
+        for k, child in ipairs(self.fakeParent.fakeChildren) do
+            if child == self.entity then
+                table.remove(self.fakeParent.fakeChildren, k)
+                if self.entity.name then
+                    self.fakeParent[self.entity.name] = nil
+                end
+                break
+            end
+        end
+    end
 end
 
 function gui.fakeChildComponent:update()

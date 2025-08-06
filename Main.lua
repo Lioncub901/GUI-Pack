@@ -20,8 +20,6 @@ function setup()
     gameWorld.time.autoUpdate = false
     gameWorld.camera:get(camera).clearColor = color(40, 40, 50)
     
-    print(gameWorld.id)
-    
     --uxl.readFile(asset.documents.TestUxl)
     --style.font()
     
