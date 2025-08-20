@@ -36,11 +36,12 @@ function gui.joystick:update()
     self.entity.handle.color = self.style.handleColor
 end
 
-function gui.joystick:touched(touch,hit)
+function gui.joystick:touched(touc,hit)
     local center = self.entity.worldPosition + vec3(self.entity.size.x/2, self.entity.size.y/2, 0)
-    local scal = self.entity.scene.canvas.scale
+    local touch = gui.mapTouchToScene(touc, self.scene)
+    
     if touch.moving or touch.began then
-        local offset = touch.pos * scal - vec2(center.x, center.y)
+        local offset = touch.pos - vec2(center.x, center.y)
         local pos = nil
         if offset.length > self.entity.size.x/2 - self.entity.handle.size.x/2 + self.offset then
             pos = offset.normalized * (self.entity.size.x/2 - self.entity.handle.size.x/2 + self.offset)

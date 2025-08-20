@@ -6,6 +6,9 @@
 	<array>
 		<string>Main</string>
 		<string>uiLayout</string>
+		<string>RemapTouchToScene</string>
+		<string>HoverChecking</string>
+		<string>TextInput</string>
 		<string>hStack</string>
 		<string>vStack</string>
 		<string>FakeChild</string>
@@ -16,11 +19,9 @@
 		<string>menuButton</string>
 		<string>menuBar</string>
 		<string>ScrollArea</string>
-		<string>TextInput</string>
 		<string>collapsibleSection</string>
 		<string>fitChildren</string>
 		<string>DragAndDrop</string>
-		<string>HoverChecking</string>
 		<string>DropDown</string>
 		<string>Grid</string>
 		<string>ColorPicker</string>

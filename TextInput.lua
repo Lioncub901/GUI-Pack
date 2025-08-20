@@ -464,8 +464,8 @@ function gui.textInput:handleFlicker()
     end
 end
 
-function gui.textInput:touched(touch)
-    local scal = self.entity.scene.canvas.scale
+function gui.textInput:touched(touc)
+    local touch = gui.mapTouchToScene(touc, self.scene)
     if self.canEdit then 
         if touch.type == touch.pointer then
             self.startFlickerTime = time.elapsed
@@ -493,7 +493,7 @@ function gui.textInput:touched(touch)
                 end
                 
                 
-                self.charPos = self:whichChar(touch.pos * scal)
+                self.charPos = self:whichChar(touch.pos)
                 self.isPressing = true
                 self.beginCharPos = self.charPos
                 self.endCharPos = nil
@@ -511,7 +511,7 @@ function gui.textInput:touched(touch)
                 self.saveCharPos = self.charPos
             end
             if touch.moving and self.charPos then
-                self.charPos = self:whichChar(touch.pos * scal)
+                self.charPos = self:whichChar(touch.pos)
                 self.beginCharPos = self.saveCharPos
                 if self.beginCharPos ~= self.charPos then
                     self.endCharPos = self.charPos

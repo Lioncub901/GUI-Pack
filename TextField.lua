@@ -153,6 +153,7 @@ function gui.textField:loadStyle()
     style.font(self.label.font)
 end
 
-function gui.textField:touched(touch)
+function gui.textField:touched(touc)
+    local touch = gui.mapTouchToScene(touc, self.scene)
     -- Codea does not automatically call this method
 end

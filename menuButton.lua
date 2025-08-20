@@ -93,7 +93,8 @@ function gui.menuButton:notSelected()
     end
     
     if CurrentTouch.began and self.canTouch then
-        local enti = gui.insideTest(self.entity.scene, CurrentTouch, "hitTest") 
+        local newCurrentTouch = gui.mapTouchToScene(CurrentTouch, self.scene)
+        local enti = gui.insideTest(self.entity.scene, newCurrentTouch, "hitTest") 
         if enti then
             local list = self:getParentList(enti)
             if enti.id ~= self.entity.id and list[#list].id ~= self.entity.id then
@@ -107,7 +108,8 @@ function gui.menuButton:notSelected()
 end
 
 function gui.menuButton:dropHovered()
-    local enti = gui.insideTest(self.entity.scene, mouse, "hoverTest") 
+    local newMouse = gui.mapMouseToScene(mouse, self.scene)
+    local enti = gui.insideTest(self.entity.scene, newMouse, "hoverTest") 
     if enti then
         local list = self:getParentList(enti)
         if list[#list].id == self.entity.id then

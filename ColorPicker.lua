@@ -137,7 +137,8 @@ function gui.pickerBox:update()
     self.pickerShader.hue = self.hue
 end
 
-function gui.pickerBox:touched(touch)
+function gui.pickerBox:touched(touc)
+    local touch = gui.mapTouchToScene(touc, self.scene)
     if touch.began then
         self.isEditing = true
     elseif touch.ended then
@@ -191,7 +192,8 @@ function gui.hueSlider:update()
     self.cursorPos =  (1-(self.hue/360)) *  self.entity.size.y
 end
 
-function gui.hueSlider:touched(touch)
+function gui.hueSlider:touched(touc)
+    local touch = gui.mapTouchToScene(touc, self.scene)
     if touch.began then
         self.isEditing = true
     elseif touch.ended then
@@ -246,7 +248,8 @@ function gui.alphaSlider:update()
     self.alphaShader.mColor = self.color
 end
 
-function gui.alphaSlider:touched(touch)
+function gui.alphaSlider:touched(touc)
+    local touch = gui.mapTouchToScene(touc, self.scene)
     if touch.began then
         self.isEditing = true
     elseif touch.ended then

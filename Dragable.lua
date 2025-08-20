@@ -92,24 +92,22 @@ function gui.dragable:Y()
     return self.entity.isFakeChild and "fy" or "y"
 end
 
-function gui.dragable:touched(touch)
+function gui.dragable:touched(touc)
+    local touch = gui.mapTouchToScene(touc, self.scene)
     if touch.began and self.conditionFunc() then
         self.passedCondition = true
     end
-
     if self.canDrag and self.passedCondition then
-        local scal = self.entity.scene.canvas.scale
-
         if touch.began  then
             self.beginPos = vec2(self.entity[self:X()],self.entity[self:Y()])
-            self.beginTouchPos = touch.pos * scal
+            self.beginTouchPos = touch.pos
             self.isDragging = true
 
             self.entity:dispatch('onStartDrag', self) 
         elseif touch.ended or touch.cancelled then
             self.isDragging = false
             self.entity:dispatch('onEndDrag', self)
-            if self.beginTouchPos == touch.pos * scal then
+            if self.beginTouchPos == touch.pos then
                 self.entity:dispatch('onTapped', self)
             end
         end
@@ -119,7 +117,7 @@ function gui.dragable:touched(touch)
         self.moving = true
         
         
-        local newPos = self.beginPos + (touch.pos * scal - self.beginTouchPos)
+        local newPos = self.beginPos + (touch.pos - self.beginTouchPos)
         if self.axis & gui.horizontal == gui.horizontal then
             self.entity[self:X()] = newPos.x 
         end

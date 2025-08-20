@@ -140,10 +140,10 @@ function gui.dragableList:moveTowardPosition(enti, pos)
 end
 
 function gui.dragableList:checkNeighbors(pos)
-    local scal = self.entity.scene.canvas.scale
+    local newCurrentTouch = gui.mapTouchToScene(CurrentTouch, self.scene)
     if pos ~= 1 then
         local yToWorld = self.entity.worldPosition.y + self.entity.size.y + self:getYPos(pos-1)
-        if CurrentTouch.delta.y * scal > 0 and CurrentTouch.y * scal > yToWorld - self.childrenOrder[pos - 1].size.y then
+        if newCurrentTouch.delta.y > 0 and newCurrentTouch.y > yToWorld - self.childrenOrder[pos - 1].size.y then
             local hold = self.childrenOrder[pos]
             self.childrenOrder[pos] = self.childrenOrder[pos-1]
             self.childrenOrder[pos-1] = hold
@@ -152,7 +152,7 @@ function gui.dragableList:checkNeighbors(pos)
     
     if pos ~= #self.childrenOrder then
         local yToWorld = self.entity.worldPosition.y + self.entity.size.y + self:getYPos(pos+1)
-        if CurrentTouch.delta.y * scal < 0 and CurrentTouch.y * scal < yToWorld then
+        if newCurrentTouch.delta.y < 0 and newCurrentTouch.y < yToWorld then
             local hold = self.childrenOrder[pos]
             self.childrenOrder[pos] = self.childrenOrder[pos+1]
             self.childrenOrder[pos+1] = hold

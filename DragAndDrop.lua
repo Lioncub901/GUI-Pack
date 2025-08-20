@@ -21,7 +21,8 @@ end
 gui.dragAndDrop.list = {}
 
 gui.beginTouchPos = nil
-function gui.dragAndDrop.handleDrag(touch, scen)
+function gui.dragAndDrop.handleDrag(touc, scen)
+    local touch = gui.mapTouchToScene(touc, scen)
     if touch.began and gui.draggedEntity == nil then
         gui.draggedEntity = gui.insideTest(scen, touch.pos, {"hitTest", "dragAndDropTest"})
         if gui.draggedEntity and gui.draggedEntity.dragAndDropTest and gui.draggedEntity:get(gui.dragAndDrop).allowDrag then
@@ -40,8 +41,8 @@ function gui.dragAndDrop.handleDrag(touch, scen)
 end
 
 
-function gui.dragAndDrop.handleDragging(touch, scen)
-
+function gui.dragAndDrop.handleDragging(touc, scen)
+    local touch = gui.mapTouchToScene(touc, scen)
     if touch.moving and gui.draggedEntity.needToAddDragItem and (touch.pos - gui.beginTouchPos).length > gui.draggedEntity:get(gui.dragAndDrop).dragDistance then
         gui.draggingEntity = gui.squareUI(gui.draggedEntity.scene.canvas, {name = "new", anchor = {LEFT, BOTTOM}, pivot = vec2(0,1)}, color(128))
         gui.draggedEntity:dispatch("onDrag")
@@ -49,11 +50,9 @@ function gui.dragAndDrop.handleDragging(touch, scen)
     end
     
     if gui.draggingEntity then
-        local scal = gui.draggingEntity.scene.canvas.scale
-
         local offset = gui.draggingOffset or vec2(0)
-        gui.draggingEntity.x = touch.x * scal + offset.x
-        gui.draggingEntity.y = touch.y * scal + offset.y
+        gui.draggingEntity.x = touch.x + offset.x
+        gui.draggingEntity.y = touch.y + offset.y
     end
    
     if (touch.ended or touch.cancelled) then

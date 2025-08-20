@@ -51,13 +51,8 @@ end
 
 function gui.button.handleHover()
     for k, scen in pairs(gui.button.scenes) do
-        
-        local newMouse = nil
-        if scen.canvas.entity.newMouse then
-            newMouse = scen.canvas.entity.newMouse(mouse)
-        end
-        
-        local buttonEnti = gui.insideTest(scen, newMouse or mouse, "hoverTest")
+        local newMouse = gui.mapMouseToScene(mouse, scen)
+        local buttonEnti = gui.insideTest(scen, newMouse, "hoverTest")
         
         local oldSelected =gui.button.oldSelected[scen.name]
         if oldSelected and oldSelected ~= buttonEnti and oldSelected.valid and oldSelected:has(gui.button) then

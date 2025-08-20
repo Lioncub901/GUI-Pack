@@ -1,22 +1,23 @@
 function gui.isInside(enti, pos)
-    local scal = enti.scene.canvas.scale
-    return pos.x * scal >= enti.worldPosition.x and pos.y * scal >= enti.worldPosition.y and pos.x * scal <= enti.worldPosition.x + enti.size.x and pos.y * scal<= enti.worldPosition.y  + enti.size.y
+    return pos.x >= enti.worldPosition.x and pos.y >= enti.worldPosition.y and pos.x <= enti.worldPosition.x + enti.size.x and pos.y <= enti.worldPosition.y  + enti.size.y
 end
 
 function gui.wasHovered(enti, conditionFunction)
-    if not enti.valid and not enti.hoverTest or not gui.wasInside(enti, mouse) then
+    local newMouse = gui.mapMouseToScene(mouse, enti.scene)
+    if not enti.valid and not enti.hoverTest or not gui.wasInside(enti, newMouse) then
         return false
     end
     
-    return enti == gui.insideTest(enti.scene, mouse, "hoverTest", conditionFunction) 
+    return enti == gui.insideTest(enti.scene, newMouse, "hoverTest", conditionFunction) 
 end
 
 function gui.wasTouched(enti, conditionFunction)
-    if not enti.valid and not enti.hitTest or not gui.wasInside(enti, CurrentTouch) then
+    local newCurrentTouch = gui.mapTouchToScene(CurrentTouch, enti.scene)
+    if not enti.valid and not enti.hitTest or not gui.wasInside(enti, newCurrentTouch) then
         return false
     end
     
-    return enti == gui.insideTest(enti.scene, CurrentTouch, "hitTest", conditionFunction)  
+    return enti == gui.insideTest(enti.scene, newCurrentTouch, "hitTest", conditionFunction)  
 end
 
 function gui.insideTest(scen, pos, property, conditionFunction)
@@ -66,7 +67,6 @@ end
 
 
 
-
 function gui.hasProperties(uiEnti, property)
     if type(property) == "string" then
         return uiEnti[property]
@@ -81,9 +81,8 @@ function gui.hasProperties(uiEnti, property)
 end
 
 function gui.getPivotFromPos(enti, pos)
-    local scal = enti.scene.canvas.scale
     if gui.wasInside(enti, pos) then
-        local toPos = pos * scal - vec2(enti.worldPosition.x, enti.worldPosition.y)
+        local toPos = pos - vec2(enti.worldPosition.x, enti.worldPosition.y)
         local pivot = toPos / enti.size
         return pivot
     end

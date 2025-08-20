@@ -65,7 +65,8 @@ function gui.scrollArea.handleHover()
             newMouse = scen.canvas.entity.newMouse(mouse)
         end
         
-        local scrollEnti =gui.insideTest(scen, mouse, "scrollTest") 
+        local newMouse = gui.mapMouseToScene(mouse, scen)
+        local scrollEnti =gui.insideTest(scen, newMouse, "scrollTest") 
         
         local oldSelected = gui.scrollArea.oldSelected[scen.name]
         if oldSelected and oldSelected ~= scrollEnti and oldSelected.valid and oldSelected:has(gui.scrollArea) then
@@ -179,7 +180,8 @@ function gui.scrollArea:contentIsSmaller()
 end
 
 function gui.scrollArea:hoveredScrollArea()
-    return gui.wasInside(self.entity, mouse) and self.entity == gui.insideTest(self.entity.scene, mouse, "scrollTest") 
+    local newMouse = gui.mapMouseToScene(mouse, self.entity.scene)
+    return gui.wasInside(self.entity, newMouse) and self.entity == gui.insideTest(self.entity.scene, newMouse, "scrollTest") 
 end
 
 function gui.scrollArea:updateBar()
@@ -344,7 +346,8 @@ function gui.scrollArea:addDamping()
     end
 end
 
-function gui.scrollArea:touched(touch)
+function gui.scrollArea:touched(touc)
+    local touch = gui.mapTouchToScene(touc, self.scene)
     if not self:contentIsSmaller() then
         if touch.began then
             self.tapCount = self.tapCount + 1

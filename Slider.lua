@@ -30,7 +30,8 @@ function gui.slider:update()
     self.bar.percent = per * 100
 end
 
-function gui.slider:touched(touch)
+function gui.slider:touched(touc)
+    local touch = gui.mapTouchToScene(touc, self.scene)
     local left = self.entity.worldPosition.x + self.bar.spacing
     local right = self.entity.worldPosition.x + self.entity.size.x - self.bar.spacing
     

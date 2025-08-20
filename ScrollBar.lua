@@ -47,9 +47,9 @@ function gui.scrollBar:layout()
     end
 end
 
-function gui.scrollBar:touched(touch)
-    local scal = self.entity.scene.canvas.scale
-    self.mousePos = touch.pos * scal
+function gui.scrollBar:touched(touc)
+    local touch = gui.mapTouchToScene(touc, self.scene)
+    self.mousePos = touch.pos
     self.drag.isDragging = true
     if touch.ended then
         self.drag.isDragging = false
