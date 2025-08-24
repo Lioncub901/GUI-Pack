@@ -86,6 +86,7 @@ function gui.hstack:stretchItems()
         end
     end
 
+    e.shouldUpdateStack = nil
 end
 
 function gui.hstack:checkActiveCount()
@@ -118,6 +119,7 @@ function gui.hstack:checkSize()
             end
         end
         size.x = size.x + self.padding.right
+
         
         e.size = size
     end
@@ -171,7 +173,7 @@ function gui.hstack:layout()
     self.oldNum ~= childCount or
     self.activeCount ~= self:checkActiveCount() or
     (firstChild and firstChild.active and not firstChild.fakeParent and
-    (firstChild.x ~= left or firstChild.size.y ~= height))
+    (firstChild.x ~= left or firstChild.size.y ~= height)) or e.shouldUpdateStack
     )
     
     if not shouldChange then

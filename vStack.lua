@@ -72,9 +72,9 @@ function gui.vstack:stretchItems()
                 end
             end
         end
+        
+        e.shouldUpdateStack = nil
     end
-    
-   
 end
 
 function gui.vstack:checkActiveCount()
@@ -131,7 +131,7 @@ function gui.vstack:layout()
     self.oldNum ~= childCount or
     self.activeCount ~= self:checkActiveCount() or
     (childCount > 0 and e:childAt(1).active and not e:childAt(1).fakeParent and
-    (e:childAt(1).y ~= -top or e:childAt(1).size.x ~= width))
+    (e:childAt(1).y ~= -top or e:childAt(1).size.x ~= width)) or e.shouldUpdateStack
     )
     
     if not shouldChange then
