@@ -11,6 +11,12 @@ function gui.wasHovered(enti, conditionFunction)
     return enti == gui.insideTest(enti.scene, newMouse, "hoverTest", conditionFunction) 
 end
 
+function gui.getHoveredEntity(scen, conditionFunction)
+    local newMouse = gui.mapMouseToScene(mouse, scen)
+    return gui.insideTest(scen, newMouse, "hoverTest", conditionFunction) 
+end
+
+
 function gui.wasTouched(enti, conditionFunction)
     local newCurrentTouch = gui.mapTouchToScene(CurrentTouch, enti.scene)
     if not enti.valid and not enti.hitTest or not gui.wasInside(enti, newCurrentTouch) then
@@ -18,6 +24,11 @@ function gui.wasTouched(enti, conditionFunction)
     end
     
     return enti == gui.insideTest(enti.scene, newCurrentTouch, "hitTest", conditionFunction)  
+end
+
+function gui.getTouchedEntity(scen, conditionFunction)
+    local newCurrentTouch = gui.mapTouchToScene(CurrentTouch, scen)
+    return gui.insideTest(scen, newCurrentTouch, "hitTest", conditionFunction)  
 end
 
 function gui.insideTest(scen, pos, property, conditionFunction)

@@ -101,6 +101,14 @@ function gui.grid:addElement(...)
     table.insert(self.elementOrder, element)
 end
 
+function gui.grid:getElement(num)
+    return self.elementOrder[num]
+end
+
+function gui.grid:getLastElement()
+    return self:getElement(#self.elementOrder)
+end
+
 function gui.grid:removeElement(num)
     local element = self.elementOrder[num]
     table.remove(self.elementOrder, num)

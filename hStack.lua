@@ -106,7 +106,6 @@ function gui.hstack:checkSize()
             end
         end
         size.x = size.x + self.padding.right
-
         
         e.size = size
     end

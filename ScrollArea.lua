@@ -117,14 +117,10 @@ function gui.scrollArea:start()
 end
 
 function gui.scrollArea:layout()
-    if self:contentIsSmaller() then
-        
-        self.maxMovePos = vec2(0)
-        self:setBarState(false)
-    else
-        self:setBarState(true)
-    end
+    self:moveContent() 
+    self:addDamping()
     
+    self:updateBar()
 end
 
 function gui.scrollArea:update()
@@ -142,11 +138,10 @@ function gui.scrollArea:update()
         self:setBarState(true)
     end
 
-   
-    self:updateBar()
-    
-    self:moveContent() 
+
+    --[[self:moveContent() 
     self:addDamping()
+    self:updateBar()]]
 end
 
 function gui.scrollArea:setBarState(state)

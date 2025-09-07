@@ -7,6 +7,7 @@ gui.dragAndDrop = class("gui.dragAndDrop",component)
 gui.draggingEntity = nil
 gui.draggedEntity = nil
 gui.dragItems = nil
+gui.droppingEntity = nil
 
 function gui.dragAndDrop:created(allowDrag)
     self.entity.dragAndDropTest = true
@@ -53,6 +54,22 @@ function gui.dragAndDrop.handleDragging(touc, scen)
         local offset = gui.draggingOffset or vec2(0)
         gui.draggingEntity.x = touch.x + offset.x
         gui.draggingEntity.y = touch.y + offset.y
+
+        local droppingEntity = gui.insideTest(scen, touch.pos, "dragAndDropTest", function(enti)
+            return enti.valid and enti.active and gui.dragAndDrop.passCondition(enti)
+        end)
+        
+        if droppingEntity ~= gui.droppingEntity then
+            if gui.droppingEntity ~= nil then
+                gui.draggedEntity:dispatch("onExitDropArea", gui.droppingEntity)
+            end
+            
+            if  droppingEntity ~= nil  then
+                gui.draggedEntity:dispatch("onEnterDropArea", droppingEntity)
+            end
+        end
+        
+        gui.droppingEntity = droppingEntity
     end
    
     if (touch.ended or touch.cancelled) then
