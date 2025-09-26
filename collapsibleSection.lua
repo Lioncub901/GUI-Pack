@@ -280,6 +280,11 @@ function gui.collapse:defaultCollapleStyle()
     end
 end
 
+function gui.collapse:clearAllItems()
+    gui.clearChildren(self.entity)
+    self.collapseList = {}
+end
+
 function gui.collapse:update()
     
     if self.collapseList then

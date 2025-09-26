@@ -62,10 +62,12 @@ function gui.dragAndDrop.handleDragging(touc, scen)
         if droppingEntity ~= gui.droppingEntity then
             if gui.droppingEntity ~= nil then
                 gui.draggedEntity:dispatch("onExitDropArea", gui.droppingEntity)
+                gui.droppingEntity:dispatch("onExitDrag")
             end
             
             if  droppingEntity ~= nil  then
                 gui.draggedEntity:dispatch("onEnterDropArea", droppingEntity)
+                droppingEntity:dispatch("onEnterDrag")
             end
         end
         
@@ -117,6 +119,7 @@ function gui.dragAndDrop.destroyDrop()
     gui.draggedEntity = nil
     gui.dragItems = nil
     gui.draggingOffset = nil
+    gui.droppingEntity = nil
 end
 
 Profiler.wrapClass(gui.dragAndDrop)

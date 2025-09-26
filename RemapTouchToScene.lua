@@ -1,4 +1,4 @@
-function gui.mapTouchToScene(touch, scen)
+function gui.mapTouchToScene(touch, scen, did)
     local newTouch = {}
     newTouch.id = touch.id
     newTouch.state = touch.state
